@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Полноэкранное видео без плеера</title>
+    <title>пенис без плеера</title>
     <style>
         body, html {
             height: 100%;
@@ -13,7 +13,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: black; /* Цвет фона, если видео не отображается */
+            background: black; /* Цвет фона при отсутствии видео */
         }
         video {
             width: 100%;
@@ -58,26 +58,36 @@
     <script>
         const videoPlayer = document.getElementById('videoPlayer');
         const videos = ['1.mp4', '2.mp4'];
-
         let currentVideo = 0;
 
         function playVideo(index) {
             currentVideo = (index + videos.length) % videos.length; // обрабатываем отрицательные индексы
             videoPlayer.src = videos[currentVideo];
+            console.log("Сейчас воспроизводится: " + videos[currentVideo]); // Информация о текущем видео
             videoPlayer.load(); // Загружаем новое видео
             videoPlayer.play().catch(error => {
                 console.error("Ошибка воспроизведения:", error);
             });
         }
 
-        videoPlayer.addEventListener('ended', () => playVideo(currentVideo + 1));
+        videoPlayer.addEventListener('ended', () => {
+            console.log("Видео закончилось. Воспроизведение следующего.");
+            playVideo(currentVideo + 1);
+        });
 
-        document.getElementById('nextButton').addEventListener('click', () => playVideo(currentVideo + 1));
-        document.getElementById('prevButton').addEventListener('click', () => playVideo(currentVideo - 1));
+        document.getElementById('nextButton').addEventListener('click', () => {
+            console.log("Нажата кнопка 'Вперёд'");
+            playVideo(currentVideo + 1);
+        });
+
+        document.getElementById('prevButton').addEventListener('click', () => {
+            console.log("Нажата кнопка 'Назад'");
+            playVideo(currentVideo - 1);
+        });
 
         // Проверка на наличие ошибок при загрузке
         videoPlayer.addEventListener('error', () => {
-            console.error("Ошибка загрузки видео. Пожалуйста, проверьте файл.");
+            console.error("Ошибка загрузки видео:", videoPlayer.error);
         });
     </script>
 </body>
