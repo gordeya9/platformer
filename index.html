@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полноэкранное видео без плеера</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Убираем прокрутку */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        video {
+            width: 100%;
+            height: 100%; /* Видео на весь экран */
+            object-fit: cover; /* Соотношение сторон сохраняется */
+            display: block; /* Чтобы избежать пробела под видео в некоторых браузерах */
+        }
+        .controls {
+            position: absolute;
+            bottom: 20px; /* Отступ от низа */
+            display: flex;
+            gap: 10px; /* Промежуток между кнопками */
+        }
+        button {
+            padding: 10px 20px; /* Размер кнопок */
+            font-size: 16px; /* Размер шрифта */
+            cursor: pointer; /* Курсор при наведении */
+            background-color: #007BFF; /* Цвет фона кнопок */
+            color: white; /* Цвет текста кнопок */
+            border: none; /* Убираем рамку */
+            border-radius: 5px; /* Скругляем углы */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+        button:hover {
+            background-color: #0056b3; /* Цвет кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <video id="videoPlayer" autoplay muted loop>
+        <source src="1.mp4" type="video/mp4">
+        <source src="1.webm" type="video/webm"> <!-- Альтернативный формат для браузеров, поддерживающих WebM -->
+        <source src="1.ogv" type="video/ogg"> <!-- Альтернативный формат OGG -->
+        Ваш браузер не поддерживает видео.
+    </video>
+    
+    <div class="controls">
+        <button id="prevButton">Назад</button>
+        <button id="nextButton">Вперёд</button>
+    </div>
+
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videos = ['1.mp4', '2.mp4']; // С списка видео
+        let currentVideo = 0;
+
+        function playVideo(index) {
+            currentVideo = (index + videos.length) % videos.length; // Обрабатываем отрицательные индексы
+            videoPlayer.src = videos[currentVideo];
+            videoPlayer.play();
+        }
+
+        videoPlayer.addEventListener('ended', () => playVideo(currentVideo + 1));
+
+        document.getElementById('nextButton').addEventListener('click', () => playVideo(currentVideo + 1));
+        document.getElementById('prevButton').addEventListener('click', () => playVideo(currentVideo - 1));
+    </script>
+</body>
+</html>
